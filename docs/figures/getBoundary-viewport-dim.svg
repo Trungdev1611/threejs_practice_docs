@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 620" width="820" height="620">
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#1a237e"/>
+    </marker>
+    <marker id="arrStart" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#1a237e"/>
+    </marker>
+    <marker id="arrBr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#5d4037"/>
+    </marker>
+    <marker id="arrBrS" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#5d4037"/>
+    </marker>
+    <marker id="arrPu" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#6a1b9a"/>
+    </marker>
+    <marker id="arrPuS" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#6a1b9a"/>
+    </marker>
+    <marker id="arrTe" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#00695c"/>
+    </marker>
+    <marker id="arrTeS" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#00695c"/>
+    </marker>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#90a4ae" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="820" height="620" fill="#fafafa"/>
+  <text x="410" y="28" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" fill="#263238">Hinh 1 - Viewport, getBoundingClientRect(), diem click (ban ve ky thuat)</text>
+  <text x="410" y="44" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#546e7a">Truc +Y huong xuong (nhu clientY). Don vi: CSS pixel.</text>
+
+  <rect x="70" y="70" width="540" height="380" fill="none" stroke="#263238" stroke-width="2"/>
+  <text x="78" y="88" font-family="ui-monospace, monospace" font-size="11" fill="#37474f">O viewport (0, 0)</text>
+  <line x1="70" y1="70" x2="95" y2="70" stroke="#c62828" stroke-width="1.5"/>
+  <line x1="70" y1="70" x2="70" y2="95" stroke="#2e7d32" stroke-width="1.5"/>
+  <polygon points="95,70 88,66 88,74" fill="#c62828"/>
+  <polygon points="70,95 66,88 74,88" fill="#2e7d32"/>
+  <text x="100" y="68" font-size="10" fill="#c62828" font-family="sans-serif">+X (huong clientX tang)</text>
+  <text x="72" y="112" font-size="10" fill="#2e7d32" font-family="sans-serif">+Y (huong clientY tang)</text>
+
+  <rect x="165" y="142" width="320" height="215" fill="url(#hatch)" stroke="#1565c0" stroke-width="2"/>
+  <text x="173" y="160" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#0d47a1">&lt;canvas&gt;</text>
+
+  <circle cx="310" cy="242" r="5" fill="#d32f2f" stroke="#fff" stroke-width="2"/>
+  <line x1="295" y1="242" x2="325" y2="242" stroke="#d32f2f" stroke-width="0.8"/>
+  <line x1="310" y1="227" x2="310" y2="257" stroke="#d32f2f" stroke-width="0.8"/>
+  <text x="318" y="235" font-family="ui-monospace, monospace" font-size="10" fill="#b71c1c">P (pointer)</text>
+
+  <g stroke="#78909c" stroke-width="0.6" stroke-dasharray="4 3" fill="none">
+    <line x1="70" y1="455" x2="70" y2="565"/>
+    <line x1="165" y1="455" x2="165" y2="565"/>
+    <line x1="310" y1="455" x2="310" y2="565"/>
+    <line x1="485" y1="455" x2="485" y2="565"/>
+    <line x1="165" y1="142" x2="165" y2="60"/>
+    <line x1="485" y1="142" x2="485" y2="60"/>
+    <line x1="70" y1="70" x2="52" y2="70"/>
+    <line x1="70" y1="142" x2="52" y2="142"/>
+    <line x1="70" y1="242" x2="52" y2="242"/>
+    <line x1="310" y1="242" x2="310" y2="365"/>
+    <line x1="165" y1="242" x2="165" y2="360"/>
+    <line x1="485" y1="357" x2="485" y2="375"/>
+    <line x1="310" y1="357" x2="310" y2="375"/>
+  </g>
+
+  <line x1="70" y1="478" x2="165" y2="478" stroke="#1a237e" stroke-width="0.9" marker-end="url(#arr)" marker-start="url(#arrStart)"/>
+  <text x="117" y="473" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1a237e">rect.left</text>
+
+  <line x1="165" y1="508" x2="485" y2="508" stroke="#1a237e" stroke-width="0.9" marker-end="url(#arr)" marker-start="url(#arrStart)"/>
+  <text x="325" y="503" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1a237e">rect.width</text>
+
+  <line x1="70" y1="548" x2="310" y2="548" stroke="#5d4037" stroke-width="0.9" marker-end="url(#arrBr)" marker-start="url(#arrBrS)"/>
+  <text x="190" y="543" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#5d4037">clientX</text>
+
+  <line x1="165" y1="352" x2="310" y2="352" stroke="#6a1b9a" stroke-width="0.9" marker-end="url(#arrPu)" marker-start="url(#arrPuS)"/>
+  <text x="237" y="347" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#6a1b9a">OffsetX = clientX - rect.left</text>
+
+  <line x1="38" y1="70" x2="38" y2="142" stroke="#1a237e" stroke-width="0.9" marker-end="url(#arr)" marker-start="url(#arrStart)"/>
+  <text x="22" y="112" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#1a237e" transform="rotate(-90 22 112)">rect.top</text>
+
+  <line x1="22" y1="70" x2="22" y2="242" stroke="#5d4037" stroke-width="0.9" marker-end="url(#arrBr)" marker-start="url(#arrBrS)"/>
+  <text x="8" y="162" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#5d4037" transform="rotate(-90 8 162)">clientY</text>
+
+  <line x1="505" y1="142" x2="505" y2="357" stroke="#1a237e" stroke-width="0.9" marker-end="url(#arr)" marker-start="url(#arrStart)"/>
+  <text x="520" y="255" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1a237e" transform="rotate(-90 520 255)">rect.height</text>
+
+  <line x1="148" y1="142" x2="148" y2="242" stroke="#6a1b9a" stroke-width="0.9" marker-end="url(#arrPu)" marker-start="url(#arrPuS)"/>
+  <text x="133" y="198" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#6a1b9a" transform="rotate(-90 133 198)">OffsetY = clientY - rect.top</text>
+
+  <g stroke="#00695c" stroke-width="0.85" fill="none">
+    <line x1="310" y1="365" x2="485" y2="365" marker-end="url(#arrTe)" marker-start="url(#arrTeS)"/>
+    <text x="397" y="360" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#00695c">rect.width - OffsetX</text>
+    <line x1="310" y1="357" x2="310" y2="365" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="485" y1="357" x2="485" y2="365" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+
+    <line x1="468" y1="242" x2="468" y2="357" marker-end="url(#arrTe)" marker-start="url(#arrTeS)"/>
+    <text x="482" y="305" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" fill="#00695c" transform="rotate(-90 482 305)">rect.height - OffsetY</text>
+    <line x1="310" y1="242" x2="468" y2="242" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="310" y1="357" x2="468" y2="357" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+  </g>
+
+  <line x1="330" y1="252" x2="420" y2="290" stroke="#455a64" stroke-width="0.7" fill="none"/>
+  <rect x="418" y="278" width="288" height="52" rx="3" fill="#fff" stroke="#90a4ae"/>
+  <text x="430" y="295" font-family="ui-monospace, monospace" font-size="9" fill="#37474f">Buoc tiep: nhan Offset voi</text>
+  <text x="430" y="310" font-family="ui-monospace, monospace" font-size="9" fill="#37474f">canvas.width/rect.width (va tuong tu Y)</text>
+  <text x="430" y="324" font-family="ui-monospace, monospace" font-size="9" fill="#37474f">-&gt; Xem Hinh 2</text>
+
+  <text x="70" y="588" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#78909c">Chu thich mau: xanh duong = rect.* | nau = client* | tim = Offset* | luc = phan du trong canvas.</text>
+</svg>

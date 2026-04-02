@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 540" width="860" height="540">
+  <defs>
+    <marker id="a2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#1a237e"/>
+    </marker>
+    <marker id="a2s" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#1a237e"/>
+    </marker>
+    <marker id="aO" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 z" fill="#e65100"/>
+    </marker>
+    <marker id="aOs" markerWidth="7" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <path d="M7,0 L0,3.5 L7,7 z" fill="#e65100"/>
+    </marker>
+    <marker id="arrBlk" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="#37474f"/>
+    </marker>
+  </defs>
+
+  <rect width="860" height="540" fill="#fafafa"/>
+  <text x="430" y="26" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" fill="#263238">Hinh 2 - Hai he do: CSS (man hinh) va pixel buffer (canvas)</text>
+  <text x="430" y="44" text-anchor="middle" font-family="ui-sans-serif, sans-serif" font-size="10" fill="#546e7a">Cung mot the canvas tren man hinh; so pixel buffer co the lon hon (devicePixelRatio, CSS scale).</text>
+
+  <g transform="translate(70, 115)">
+    <rect x="0" y="0" width="260" height="160" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+    <text x="8" y="22" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#0d47a1">Hien thi (CSS layout)</text>
+    <text x="8" y="38" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#455a64">getBoundingClientRect()</text>
+
+    <line x1="0" y1="185" x2="260" y2="185" stroke="#1a237e" stroke-width="0.9" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+    <text x="130" y="180" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1a237e">rect.width</text>
+    <line x1="0" y1="160" x2="0" y2="192" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="260" y1="160" x2="260" y2="192" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+
+    <line x1="285" y1="0" x2="285" y2="160" stroke="#1a237e" stroke-width="0.9" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+    <text x="302" y="88" font-family="ui-monospace, monospace" font-size="11" fill="#1a237e" transform="rotate(-90 302 88)">rect.height</text>
+    <line x1="0" y1="0" x2="292" y2="0" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="0" y1="160" x2="292" y2="160" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+  </g>
+
+  <g transform="translate(490, 90)">
+    <rect x="0" y="0" width="300" height="210" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+    <text x="8" y="22" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bf360c">Buffer bitmap (drawing buffer)</text>
+    <text x="8" y="38" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#6d4c41">canvas.width x canvas.height (thuoc tinh HTML)</text>
+
+    <line x1="0" y1="235" x2="300" y2="235" stroke="#e65100" stroke-width="0.9" marker-end="url(#aO)" marker-start="url(#aOs)"/>
+    <text x="150" y="230" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#e65100">canvas.width</text>
+    <line x1="0" y1="210" x2="0" y2="242" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="300" y1="210" x2="300" y2="242" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+
+    <line x1="325" y1="0" x2="325" y2="210" stroke="#e65100" stroke-width="0.9" marker-end="url(#aO)" marker-start="url(#aOs)"/>
+    <text x="340" y="108" font-family="ui-monospace, monospace" font-size="11" fill="#e65100" transform="rotate(-90 340 108)">canvas.height</text>
+    <line x1="0" y1="0" x2="332" y2="0" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <line x1="0" y1="210" x2="332" y2="210" stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2"/>
+  </g>
+
+  <g stroke="#78909c" stroke-width="0.5" stroke-dasharray="3 2" fill="none">
+    <line x1="70" y1="305" x2="70" y2="318"/>
+    <line x1="330" y1="305" x2="330" y2="318"/>
+    <line x1="490" y1="300" x2="490" y2="318"/>
+    <line x1="790" y1="300" x2="790" y2="318"/>
+  </g>
+  <line x1="70" y1="312" x2="330" y2="312" stroke="#455a64" stroke-width="0.85" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+  <text x="200" y="307" text-anchor="middle" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#37474f">be ngang vung CSS (bang rect.width o vi du hinh ve)</text>
+  <line x1="490" y1="312" x2="790" y2="312" stroke="#e65100" stroke-width="0.85" marker-end="url(#aO)" marker-start="url(#aOs)"/>
+  <text x="640" y="307" text-anchor="middle" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#bf360c">be ngang buffer (canvas.width)</text>
+
+  <g>
+    <line x1="355" y1="195" x2="475" y2="195" stroke="#37474f" stroke-width="1.2" marker-end="url(#arrBlk)"/>
+    <line x1="475" y1="210" x2="355" y2="210" stroke="#37474f" stroke-width="1.2" marker-end="url(#arrBlk)"/>
+    <text x="415" y="188" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#263238">x scaleX</text>
+    <text x="415" y="223" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#263238">x scaleY</text>
+    <text x="415" y="243" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#1b5e20">scaleX = canvas.width / rect.width</text>
+    <text x="415" y="260" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#1b5e20">scaleY = canvas.height / rect.height</text>
+  </g>
+
+  <rect x="115" y="330" width="630" height="100" rx="4" fill="#fff" stroke="#90a4ae" stroke-width="1"/>
+  <text x="130" y="355" font-family="ui-sans-serif, sans-serif" font-size="11" font-weight="600" fill="#37474f">Ap vao offset tu Hinh 1</text>
+  <text x="130" y="378" font-family="ui-monospace, monospace" font-size="12" fill="#1565c0">x_buffer = (clientX - rect.left) * (canvas.width / rect.width)</text>
+  <text x="130" y="400" font-family="ui-monospace, monospace" font-size="12" fill="#1565c0">y_buffer = (clientY - rect.top) * (canvas.height / rect.height)</text>
+  <text x="130" y="420" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#607d8b">He so doc lap theo truc: co the scaleX != scaleY neu ty le CSS khac ty le buffer.</text>
+
+  <text x="70" y="460" font-family="ui-sans-serif, sans-serif" font-size="10" fill="#607d8b">Vi du so: rect 960x540, canvas 1920x1080 -&gt; scaleX = scaleY = 2 (moi 1 CSS px ngang/doc tuong ung 2 px buffer).</text>
+  <text x="70" y="478" font-family="ui-sans-serif, sans-serif" font-size="10" fill="#607d8b">Vi du: thiet lap canvas.width = rect.width (va height) -&gt; scale = 1, khong can nhan them.</text>
+
+  <text x="70" y="515" font-family="ui-sans-serif, sans-serif" font-size="9" fill="#78909c">Ky hieu ban ve: giong noi net dut; duong dim noi lien + mui ten hai dau; mau xanh = rect, cam = canvas buffer, xam = lien he scale.</text>
+</svg>

@@ -1,21 +1,13 @@
 /**
- * raycast.js — Bài học Raycaster (Three.js)
+ * raycast.js — Raycaster + metadata panel (demo gần UX BIM)
  *
- * Mục tiêu:
- * - Hiểu tọa độ chuột chuẩn hóa (NDC) để bắn tia từ camera.
- * - Dùng Raycaster.intersectObjects để biết mesh nào bị trúng.
- * - Highlight object đang “pick” (ở đây dùng material.emissive như tutorial manual).
- *
- * Tài liệu tham khảo: three.js docs — Raycaster, PerspectiveCamera
+ * - Mỗi cube có name + userData (metadata nghiệp vụ giả lập).
+ * - Click chọn → highlight emissive + hiển thị panel bên phải (bbox, hit point, JSON userData).
  */
 
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-/**
- * Random số thực trong [min, max].
- * Nếu chỉ truyền 1 tham số: rand(5) => [0, 5].
- */
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -24,78 +16,13 @@ function rand(min, max) {
   return min + (max - min) * Math.random();
 }
 
-/**
- * Màu HSL ngẫu nhiên (chuỗi CSS) cho MeshPhongMaterial.color.
- * | 0 là ép số thực thành int (0–359 cho hue).
- */
 function randomColor() {
   return `hsl(${rand(360) | 0}, ${rand(50, 100) | 0}%, 50%)`;
 }
 
-/**
- * PickHelper — gom logic “chọn object bằng tia” vào một class cho dễ đọc.
- *
- * Luồng mỗi frame (hoặc mỗi lần gọi pick):
- * 1) Nếu frame trước đã có pickedObject → khôi phục emissive cũ (tránh “dính” màu).
- * 2) Raycaster.setFromCamera(ndc, camera) — bắn tia từ camera qua điểm NDC trên mặt phẳng near.
- * 3) intersectObjects(...) — trả danh sách giao cắt, sắp xếp theo khoảng cách (gần nhất trước).
- * 4) Lấy phần tử [0], lưu emissive hiện tại, gán emissive nhấp nháy để thấy rõ đang pick cái nào.
- */
-class PickHelper {
-  constructor() {
-    /** Tia + logic giao cắt; không cần new mỗi frame */
-    this.raycaster = new THREE.Raycaster();
-    /** Mesh đang được coi là “đang pick” (hoặc undefined) */
-    this.pickedObject = null;
-    /** Lưu màu emissive gốc để restore khi đổi sang object khác / bỏ pick */
-    this.pickedObjectSavedColor = 0;
-  }
+/** Màu emissive khi được chọn (dễ nhìn, không nhấp nháy) */
+const SELECT_EMISSIVE = 0x2a4a2a;
 
-  /**
-   * @param normalizedPosition — Vector2 hoặc {x,y} trong NDC: x,y ∈ [-1, 1]
-   * @param scene — scene gốc (sẽ duyệt scene.children)
-   * @param camera — camera đang render
-   * @param time — giây (dùng để nhấp nháy màu theo thời gian)
-   */
-  pick(normalizedPosition, scene, camera, time) {
-    // Bước A: hoàn tác highlight object cũ (nếu có)
-    if (this.pickedObject) {
-      this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
-      this.pickedObject = undefined;
-    }
-
-    // Bước B: đặt tia từ camera đi qua điểm (x,y) trên “màn hình ảo” NDC
-    this.raycaster.setFromCamera(normalizedPosition, camera);
-
-    // Bước C: quét giao cắt
-    // Tham số thứ 2 = true: đệ quy vào con của Group (sau này bạn nhóm mesh vẫn pick được)
-    const intersectedObjects = this.raycaster.intersectObjects(scene.children, true);
-
-    if (intersectedObjects.length) {
-      // Phần tử đầu = điểm hit gần camera nhất
-      const hit = intersectedObjects[0].object;
-      // Chỉ xử lý Mesh có material (tránh helper / Line / Sprite lỡ trúng)
-      if (!hit.isMesh || !hit.material) return;
-
-      this.pickedObject = hit;
-      this.pickedObjectSavedColor = hit.material.emissive.getHex();
-
-      // Nhấp nháy đỏ/vàng theo time — chỉ để demo visual; production thường đổi outline hoặc 1 lần set màu
-      hit.material.emissive.setHex((time * 8) % 2 > 1 ? 0xffff00 : 0xff0000);
-    }
-  }
-}
-
-/**
- * Chuyển tọa độ pixel chuột (event) sang Normalized Device Coordinates (NDC).
- *
- * NDC là hệ mà Three.js / OpenGL dùng cho “màn hình clip”:
- * - x: trái = -1, phải = +1
- * - y: dưới = -1, trên = +1  (nên phải đảo dấu Y so với clientY của trình duyệt)
- *
- * Quan trọng: dùng getBoundingClientRect() của canvas để đúng khi canvas không full màn hình
- * hoặc có thanh nav phía trên (offset so với window).
- */
 function getCanvasNDC(event, canvas) {
   const rect = canvas.getBoundingClientRect();
   const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -103,10 +30,67 @@ function getCanvasNDC(event, canvas) {
   return { x, y };
 }
 
+/**
+ * Cập nhật DOM panel bên phải từ mesh + kết quả ray hit.
+ */
+function renderMetadataPanel(mesh, hit) {
+  const emptyEl = document.getElementById("metadata-empty");
+  const contentEl = document.getElementById("metadata-content");
+  if (!emptyEl || !contentEl) return;
+
+  if (!mesh || !hit) {
+    emptyEl.hidden = false;
+    contentEl.hidden = true;
+    contentEl.innerHTML = "";
+    return;
+  }
+
+  emptyEl.hidden = true;
+  contentEl.hidden = false;
+
+  const box = new THREE.Box3().setFromObject(mesh);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+
+  const ud = mesh.userData ?? {};
+  const metaJson = JSON.stringify(ud, null, 2);
+
+  const colorHex = mesh.material?.color?.getHexString?.() ?? "—";
+
+  contentEl.innerHTML = `
+    <dl>
+      <dt>Tên (name)</dt>
+      <dd>${escapeHtml(mesh.name || "(trống)")}</dd>
+      <dt>UUID (Three.js)</dt>
+      <dd><code>${escapeHtml(mesh.uuid)}</code></dd>
+      <dt>Điểm hit (world)</dt>
+      <dd>x ${hit.point.x.toFixed(2)}, y ${hit.point.y.toFixed(2)}, z ${hit.point.z.toFixed(2)}</dd>
+      <dt>Khoảng cách camera → hit</dt>
+      <dd>${hit.distance.toFixed(3)}</dd>
+      <dt>Bbox size (đơn vị scene)</dt>
+      <dd>W ${size.x.toFixed(2)} × H ${size.y.toFixed(2)} × D ${size.z.toFixed(2)}</dd>
+      <dt>Bbox center (world)</dt>
+      <dd>x ${center.x.toFixed(2)}, y ${center.y.toFixed(2)}, z ${center.z.toFixed(2)}</dd>
+      <dt>Màu diffuse (hex)</dt>
+      <dd>#${colorHex}</dd>
+      <dt>userData (metadata nghiệp vụ)</dt>
+    </dl>
+    <pre class="meta-json">${escapeHtml(metaJson)}</pre>
+  `;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function main() {
-  // --- Renderer: vẽ WebGL lên canvas, gắn vào body (giống style main.js của bạn) ---
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  // Giới hạn DPR để đỡ nặng GPU trên màn hình retina
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -114,7 +98,6 @@ function main() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x111118);
 
-  // fov, aspect, near, far — frustum của PerspectiveCamera
   const camera = new THREE.PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
@@ -123,52 +106,97 @@ function main() {
   );
   camera.position.set(0, 0, 45);
 
-  // OrbitControls: xoay/pan/zoom bằng chuột — tiện khi học, không bắt buộc cho raycast
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; // chuyển động mượt hơn một chút
+  controls.enableDamping = true;
   controls.target.set(0, 0, 0);
 
-  // MeshPhongMaterial cần ánh sáng; Ambient + Directional là combo đơn giản
   scene.add(new THREE.AmbientLight(0xffffff, 0.35));
   const dir = new THREE.DirectionalLight(0xffffff, 1.2);
   dir.position.set(10, 20, 10);
   scene.add(dir);
 
-  // Một geometry dùng chung cho 100 cube — tiết kiệm bộ nhớ (chỉ khác material / transform)
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
+  const categories = ["Wall", "Column", "Slab", "Beam", "Generic"];
   const numObjects = 100;
+
   for (let i = 0; i < numObjects; i++) {
     const material = new THREE.MeshPhongMaterial({
       color: randomColor(),
-      // Bắt buộc khởi tạo emissive = đen để getHex() ổn định và restore đúng khi pick
       emissive: 0x000000,
     });
     const cube = new THREE.Mesh(geometry, material);
+    cube.name = `DemoCube_${i}`;
+
+    // Metadata giả lập — trên dự án thật thường map từ BIM / APS
+    cube.userData = {
+      elementId: `EL-${String(i).padStart(4, "0")}`,
+      category: categories[i % categories.length],
+      level: `L${(i % 8) + 1}`,
+      discipline: i % 2 === 0 ? "Architecture" : "Structure",
+      note: "Demo — thay bằng property từ viewer/API khi tích hợp APS",
+    };
+
     scene.add(cube);
     cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
     cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
     cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
   }
 
-  /**
-   * pickPosition: Vector2 NDC cập nhật theo mousemove.
-   * Giá trị (-10, -10) khi chuột ra khỏi canvas — nằm ngoài [-1,1] nên raycaster thường không hit gì
-   * (cách đơn giản để “bỏ pick” mà không cần gọi pick riêng).
-   */
-  const pickPosition = new THREE.Vector2(-10, -10);
-  const pickHelper = new PickHelper();
+  const raycaster = new THREE.Raycaster();
+  let selectedMesh = null;
+  let selectedEmissiveSaved = 0;
 
-  renderer.domElement.addEventListener("mousemove", (e) => {
+  function clearSelection() {
+    if (selectedMesh?.material) {
+      selectedMesh.material.emissive.setHex(selectedEmissiveSaved);
+    }
+    selectedMesh = null;
+    renderMetadataPanel(null, null);
+  }
+
+  function selectMesh(mesh, hit) {
+    if (selectedMesh === mesh) return;
+
+    if (selectedMesh?.material) {
+      selectedMesh.material.emissive.setHex(selectedEmissiveSaved);
+    }
+
+    if (!mesh?.isMesh || !mesh.material) {
+      clearSelection();
+      return;
+    }
+
+    selectedMesh = mesh;
+    selectedEmissiveSaved = mesh.material.emissive.getHex();
+    mesh.material.emissive.setHex(SELECT_EMISSIVE);
+    renderMetadataPanel(mesh, hit);
+  }
+
+  renderer.domElement.addEventListener("click", (e) => {
+    // Tránh xung đột: click UI panel không raycast
+    if (e.target !== renderer.domElement) return;
+
     const ndc = getCanvasNDC(e, renderer.domElement);
-    pickPosition.set(ndc.x, ndc.y);
-  });
+    raycaster.setFromCamera(new THREE.Vector2(ndc.x, ndc.y), camera);
+    const hits = raycaster.intersectObjects(scene.children, true);
 
-  renderer.domElement.addEventListener("mouseleave", () => {
-    pickPosition.set(-10, -10);
+    if (!hits.length) {
+      clearSelection();
+      return;
+    }
+
+    const hit = hits[0];
+    const obj = hit.object;
+    if (!obj.isMesh || !obj.material) {
+      clearSelection();
+      return;
+    }
+
+    selectMesh(obj, hit);
   });
 
   function onWindowResize() {
@@ -181,11 +209,8 @@ function main() {
   }
   window.addEventListener("resize", onWindowResize, false);
 
-  function render(time) {
-    // requestAnimationFrame trả milliseconds → đổi sang giây cho công thức nhấp nháy
-    time *= 0.001;
+  function render() {
     controls.update();
-    pickHelper.pick(pickPosition, scene, camera, time);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
   }

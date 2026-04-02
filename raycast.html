@@ -25,17 +25,72 @@
         background: rgba(0, 0, 0, 0.65);
         color: #ddd;
         font-size: 13px;
-        max-width: 320px;
+        max-width: 280px;
+      }
+      /* Panel metadata bên phải (kiểu property panel BIM-lite) */
+      #metadata-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 11;
+        width: min(360px, 100vw);
+        height: 100vh;
+        box-sizing: border-box;
+        padding: 52px 16px 16px;
+        background: rgba(18, 20, 28, 0.92);
+        color: #e8eaef;
+        font-size: 13px;
+        line-height: 1.45;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        overflow-y: auto;
+        pointer-events: auto;
+      }
+      #metadata-panel h2 {
+        margin: 0 0 12px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+      }
+      #metadata-panel .empty {
+        color: #8b919d;
+        font-style: italic;
+      }
+      #metadata-panel dl {
+        margin: 0;
+      }
+      #metadata-panel dt {
+        margin-top: 10px;
+        color: #9aa3b2;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      #metadata-panel dd {
+        margin: 4px 0 0;
+        word-break: break-word;
+      }
+      #metadata-panel pre.meta-json {
+        margin: 8px 0 0;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.35);
+        border-radius: 6px;
+        font-size: 11px;
+        overflow-x: auto;
       }
     </style>
   </head>
   <body>
     <div id="nav">
       <a href="/index.html">← Trang chủ (artwork / cube / sun)</a>
-      · Raycast + 100 cubes
+      · Raycast + metadata
     </div>
+    <aside id="metadata-panel" aria-live="polite">
+      <h2>Metadata</h2>
+      <p class="empty" id="metadata-empty">Click một khối trên canvas để xem tên, thuộc tính và kích thước (bbox).</p>
+      <div id="metadata-content" hidden></div>
+    </aside>
     <div id="hint">
-      Di chuyển chuột: raycaster chọn mesh gần nhất; emissive nhấp nháy đỏ/vàng.
+      Click chọn khối → highlight + panel bên phải. Xoay view: kéo chuột (OrbitControls).
     </div>
     <script type="module" src="/raycast.js"></script>
   </body>
