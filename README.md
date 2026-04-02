@@ -1,6 +1,6 @@
-# Three.js demo — artwork ring + cube + sun
+# threejs_practice_docs
 
-Vite + Three.js (ES modules). Code tách module trong `objects/`.
+Vite + Three.js (ES modules): demo artwork / cube / sun + trang học **Raycaster** (`raycast.html`).
 
 ## Chạy local
 
@@ -9,7 +9,8 @@ npm install
 npm run dev
 ```
 
-Mở URL Vite in ra (thường `http://localhost:5173`).
+- Trang chính: `/` — vòng tranh + cube + mặt trời  
+- Raycast: `/raycast.html` — 100 cube + `Raycaster` + comment chi tiết trong `raycast.js`
 
 ## Ảnh artwork
 

@@ -4,10 +4,24 @@
     <meta charset="utf-8">
     <title>Three.js — artwork, cube, sun</title>
     <style>
-      body { margin: 0; }
+      body { margin: 0; font-family: system-ui, sans-serif; }
+      #nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-size: 14px;
+      }
+      #nav a { color: #8cf; }
     </style>
   </head>
   <body>
+    <div id="nav">
+      <a href="/raycast.html">Học Raycast (100 cubes)</a>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
